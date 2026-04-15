@@ -4,17 +4,27 @@ on:
   schedule:
     - cron: '0 7 * * *' # Every day at 07:00 UTC
   workflow_dispatch:
+    inputs:
+      upstream_branch:
+        description: 'Upstream branch to sync from (default: main)'
+        required: false
+        default: 'main'
+        type: string
 
 permissions:
   contents: write
   pull-requests: write
+
+concurrency:
+  group: sync-upstream-${{ github.repository }}
+  cancel-in-progress: true
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     env:
       UPSTREAM_REPO: https://github.com/garrytan/gstack.git
-      UPSTREAM_BRANCH: main
+      UPSTREAM_BRANCH: ${{ inputs.upstream_branch || 'main' }}
       SYNC_BRANCH: sync/upstream-main
       BASE_BRANCH: ${{ github.event.repository.default_branch }}
 
@@ -44,6 +54,7 @@ jobs:
             const repo = context.repo.repo;
             const head = `${owner}:${process.env.SYNC_BRANCH}`;
             const base = process.env.BASE_BRANCH || 'main';
+            const labels = ['upstream-sync', 'dependencies'];
 
             const compare = await github.rest.repos.compareCommitsWithBasehead({
               owner,
@@ -65,7 +76,20 @@ jobs:
             });
 
             if (open.data.length > 0) {
-              core.info(`Sync PR already exists: #${open.data[0].number}`);
+              const pr = open.data[0];
+              await github.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number: pr.number,
+                labels
+              });
+              await github.rest.pulls.update({
+                owner,
+                repo,
+                pull_number: pr.number,
+                title: `chore: sync upstream (${process.env.UPSTREAM_BRANCH} -> ${base})`
+              });
+              core.info(`Sync PR already exists: #${pr.number}`);
               return;
             }
 
@@ -84,6 +108,13 @@ jobs:
                 '',
                 'Please review and merge when checks pass.'
               ].join('\n')
+            });
+
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number: created.data.number,
+              labels
             });
 
             core.info(`Created PR #${created.data.number}: ${created.data.html_url}`);
