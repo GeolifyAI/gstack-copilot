@@ -2115,9 +2115,9 @@ describe('setup script validation', () => {
     expect(fnBody).toContain('rm -f "$target"');
   });
 
-  test('setup supports --host auto|claude|codex|kiro', () => {
+  test('setup supports --host auto|claude|codex|kiro|copilot', () => {
     expect(setupContent).toContain('--host');
-    expect(setupContent).toContain('claude|codex|kiro|factory|auto');
+    expect(setupContent).toContain('claude|codex|kiro|factory|copilot|auto');
   });
 
   test('auto mode detects claude, codex, and kiro binaries', () => {

@@ -1,7 +1,7 @@
 # Adding a New Host to gstack
 
 gstack uses a declarative host config system. Each supported AI coding agent
-(Claude, Codex, Factory, Kiro, OpenCode, Slate, Cursor, OpenClaw) is defined
+(Claude, Codex, Factory, Kiro, OpenCode, Copilot, Slate, Cursor, OpenClaw) is defined
 as a typed TypeScript config object. Adding a new host means creating one file
 and re-exporting it. Zero code changes to the generator, setup, or tooling.
 
@@ -14,6 +14,7 @@ hosts/
 ├── factory.ts       # Factory Droid
 ├── kiro.ts          # Amazon Kiro
 ├── opencode.ts      # OpenCode
+├── copilot.ts       # GitHub Copilot
 ├── slate.ts         # Slate (Random Labs)
 ├── cursor.ts        # Cursor
 ├── openclaw.ts      # OpenClaw (hybrid: config + adapter)
