@@ -289,6 +289,9 @@ if [ "$INSTALL_OPENCODE" -eq 1 ] && [ "$NEEDS_BUILD" -eq 0 ]; then
     cd "$SOURCE_GSTACK_DIR"
     bun install --frozen-lockfile 2>/dev/null || bun install
     bun run gen:skill-docs --host opencode
+  )
+fi
+
 # 1d. Generate .copilot/ Copilot skill docs
 if [ "$INSTALL_COPILOT" -eq 1 ] && [ "$NEEDS_BUILD" -eq 0 ]; then
   log "Generating .copilot/ skill docs..."
@@ -911,7 +914,9 @@ if [ "$INSTALL_OPENCODE" -eq 1 ]; then
   echo "gstack ready (opencode)."
   echo "  browse: $BROWSE_BIN"
   echo "  opencode skills: $OPENCODE_SKILLS"
-# 6c. Install for Copilot
+fi
+
+# 6d. Install for Copilot
 if [ "$INSTALL_COPILOT" -eq 1 ]; then
   COPILOT_DIR="$SOURCE_GSTACK_DIR/.copilot/skills"
   mkdir -p "$COPILOT_SKILLS"

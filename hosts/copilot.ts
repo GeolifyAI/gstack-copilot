@@ -17,6 +17,8 @@ const copilot: HostConfig = {
     descriptionLimit: null,
   },
 
+  suppressedResolvers: ['GBRAIN_CONTEXT_LOAD', 'GBRAIN_SAVE_RESULTS'],
+
   generation: {
     generateMetadata: false,
     skipSkills: ['codex'],
