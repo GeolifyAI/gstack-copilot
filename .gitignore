@@ -12,6 +12,7 @@ bin/gstack-global-discover
 .factory/
 .kiro/
 .opencode/
+.copilot/
 .slate/
 .cursor/
 .openclaw/
@@ -28,3 +29,4 @@ extension/.auth.json
 .env.*
 !.env.example
 supabase/.temp/
+.DS_Store

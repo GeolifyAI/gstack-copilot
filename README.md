@@ -1,5 +1,19 @@
 # gstack
 
+## Fork Note: gstack-copilot (GitHub Copilot Edition)
+
+This repository is a fork of upstream gstack with first-class host support for
+GitHub Copilot workflows.
+
+What is different in this fork:
+- Adds a dedicated `copilot` host config (`hosts/copilot.ts`)
+- Generates skill packs under `.copilot/skills/gstack-*`
+- Supports host-targeted install with `./setup --host copilot`
+- Keeps upstream-compatible structure so syncing from upstream stays straightforward
+
+If you only use Claude Code, upstream gstack works out of the box. If you want
+the same gstack workflow tailored for GitHub Copilot environments, use this fork.
+
 > "I don't think I've typed like a line of code probably since December, basically, which is an extremely large change." — [Andrej Karpathy](https://fortune.com/2026/03/21/andrej-karpathy-openai-cofounder-ai-agents-coding-state-of-psychosis-openclaw/), No Priors podcast, March 2026
 
 When I heard Karpathy say this, I wanted to find out how. How does one person ship like a team of twenty? Peter Steinberger built [OpenClaw](https://github.com/openclaw/openclaw) — 247K GitHub stars — essentially solo with AI agents. The revolution is here. A single builder with the right tooling can move faster than a traditional team.
@@ -111,11 +125,19 @@ These are conversational skills. Your OpenClaw agent runs them directly via chat
 ### Other AI Agents
 
 gstack works on 10 AI coding agents, not just Claude. Setup auto-detects which
+gstack works on 9 AI coding agents, not just Claude. Setup auto-detects which
 agents you have installed:
 
 ```bash
-git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git ~/gstack
-cd ~/gstack && ./setup
+git clone --single-branch --depth 1 https://github.com/GeolifyAI/gstack-copilot.git ~/gstack-copilot
+cd ~/gstack-copilot && ./setup
+```
+
+For GitHub Copilot-focused setup, run:
+
+```bash
+git clone --single-branch --depth 1 https://github.com/GeolifyAI/gstack-copilot.git ~/.copilot/skills/gstack
+cd ~/.copilot/skills/gstack && ./setup --host copilot
 ```
 
 Or target a specific agent with `./setup --host <name>`:
@@ -130,6 +152,42 @@ Or target a specific agent with `./setup --host <name>`:
 | Kiro | `--host kiro` | `~/.kiro/skills/gstack-*/` |
 | Hermes | `--host hermes` | `~/.hermes/skills/gstack-*/` |
 | GBrain (mod) | `--host gbrain` | `~/.gbrain/skills/gstack-*/` |
+| GitHub Copilot | `--host copilot` | `~/.copilot/skills/gstack-*/` |
+
+### Upstream vs this fork
+
+| Area | Upstream `garrytan/gstack` | This fork `gstack-copilot` |
+|------|-----------------------------|-----------------------------|
+| Primary target | Claude-first workflows | Copilot + multi-host workflows |
+| Copilot host | Not included by default | Included (`--host copilot`) |
+| Generated skill root | Mainly `.claude/skills/...` and other built-in hosts | Adds `.copilot/skills/...` host generation |
+| Best use case | Use gstack as-is in Claude Code | Keep gstack methodology while standardizing on Copilot environments |
+
+### Keep this fork synced with upstream
+
+Use this once when setting up your local clone:
+
+```bash
+git remote add upstream https://github.com/garrytan/gstack.git
+git remote -v
+```
+
+Then update your fork regularly:
+
+```bash
+git fetch upstream
+git checkout main
+git merge --ff-only upstream/main
+git push origin main
+```
+
+If you have a long-lived branch, replay it on top of updated `main`:
+
+```bash
+git checkout <your-feature-branch>
+git rebase main
+git push --force-with-lease
+```
 
 **Want to add support for another agent?** See [docs/ADDING_A_HOST.md](docs/ADDING_A_HOST.md).
 It's one TypeScript config file, zero code changes.
