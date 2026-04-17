@@ -30,8 +30,8 @@ const ROOT = path.resolve(import.meta.dir, '..');
 // ─── hosts/index.ts ─────────────────────────────────────────
 
 describe('hosts/index.ts', () => {
-  test('ALL_HOST_CONFIGS has 9 hosts', () => {
-    expect(ALL_HOST_CONFIGS.length).toBe(9);
+  test('ALL_HOST_CONFIGS has 11 hosts', () => {
+    expect(ALL_HOST_CONFIGS.length).toBe(11);
   });
 
   test('ALL_HOST_NAMES matches config names', () => {
@@ -479,9 +479,8 @@ describe('host config correctness', () => {
     expect(openclaw.pathRewrites.some(r => r.from === 'CLAUDE.md' && r.to === 'AGENTS.md')).toBe(true);
   });
 
-  test('openclaw has adapter path', () => {
-    expect(openclaw.adapter).toBeDefined();
-    expect(openclaw.adapter).toContain('openclaw-adapter');
+  test('openclaw has no adapter (dead code removed)', () => {
+    expect(openclaw.adapter).toBeUndefined();
   });
 
   test('openclaw has no staticFiles (SOUL.md removed)', () => {
