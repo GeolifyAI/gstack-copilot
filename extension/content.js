@@ -211,7 +211,10 @@ function captureBasicData(el) {
         }
       } catch (e) { if (!(e instanceof DOMException)) throw e; }
     }
-  } catch (e) { if (!(e instanceof TypeError) && !(e instanceof DOMException)) throw e; }
+  } catch (e) {
+    // cross-origin or restricted stylesheets can throw while iterating CSSOM.
+    if (!(e instanceof TypeError) && !(e instanceof DOMException)) throw e;
+  }
 
   return { computedStyles, boxModel, matchedRules };
 }

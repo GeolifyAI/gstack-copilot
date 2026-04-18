@@ -1219,6 +1219,7 @@ async function handleCommand(body: any, tokenInfo?: TokenInfo | null): Promise<R
   });
 }
 
+async function shutdown(): Promise<void>;
 async function shutdown(exitCode: number = 0) {
   if (isShuttingDown) return;
   isShuttingDown = true;

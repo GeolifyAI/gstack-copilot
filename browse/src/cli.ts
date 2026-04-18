@@ -834,12 +834,12 @@ Refs:           After 'snapshot', use @e1, @e2... as selectors:
         BROWSE_HEADED: '1',
         BROWSE_PORT: '34567',
         BROWSE_SIDEBAR_CHAT: '1',
-        // Disable parent-process watchdog: the user controls the headed browser
-        // window lifecycle. The CLI exits immediately after connect, so watching
-        // it would kill the server ~15s later. Cleanup happens via browser
-        // disconnect event or $B disconnect.
-        BROWSE_PARENT_PID: '0',
       };
+      // Disable parent-process watchdog: the user controls the headed browser
+      // window lifecycle. The CLI exits immediately after connect, so watching
+      // it would kill the server ~15s later. Cleanup happens via browser
+      // disconnect event or $B disconnect.
+      serverEnv.BROWSE_PARENT_PID = '0';
       const newState = await startServer(serverEnv);
 
       // Print connected status
