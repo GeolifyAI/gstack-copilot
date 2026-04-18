@@ -30,3 +30,6 @@ extension/.auth.json
 !.env.example
 supabase/.temp/
 .DS_Store
+
+# Throughput analysis — local-only, regenerate via scripts/garry-output-comparison.ts
+docs/throughput-*.json
